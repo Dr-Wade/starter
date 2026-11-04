@@ -43,7 +43,7 @@ export default defineConfig({
                 "**/*.module.ts"
             ],
             // Fails the full suite (never the PR check) below these. Set just
-            // under the starter's own numbers; raise them as the project grows.
+            // under the template's own numbers; raise them as the project grows.
             thresholds: { lines: 45, statements: 45, functions: 35, branches: 30 }
         }
     }
