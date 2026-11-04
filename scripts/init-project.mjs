@@ -2,11 +2,12 @@
 //
 //   pnpm init-project <name> ["Display name"]
 //
-// Renames the @starter/* packages, the queue prefix and the database, gives
-// the project a port band of its own, removes the starter-only sections of
-// CLAUDE.md and README.md, refreshes the lockfile, and lists what still says
-// "starter". Everything else (the todo example, the worker) is a decision
-// left to whoever runs it; CLAUDE.md says how.
+// Renames the @starter/* packages, the queue prefix, the database and the
+// titles, gives the project a port band of its own, removes README's template
+// blurb, refreshes the lockfile, and lists what still says "starter". It
+// leaves CLAUDE.md's "Starting a project from this" in place: its remaining
+// steps (the worker, the todo example) are decisions for whoever runs it, and
+// the last one replaces the section.
 import { execFileSync } from "node:child_process";
 import { readFileSync, rmSync, writeFileSync } from "node:fs";
 
@@ -67,8 +68,12 @@ for (const file of [...files, ".env"]) {
     if (DATABASE_FILES.has(file) || file === ".env") {
         next = next.replace(/\bstarter\b/g, dbName);
     }
-    if (file === "CLAUDE.md" || file === "README.md") {
-        next = next.replace(/<!-- starter:begin -->[\s\S]*?<!-- starter:end -->\n*/g, "");
+    if (file === "CLAUDE.md") {
+        next = next.replace(/^# Starter — agent notes$/m, `# ${title} — agent notes`);
+    }
+    if (file === "README.md") {
+        next = next.replace(/^# Starter$/m, `# ${title}`)
+            .replace(/<!-- starter:begin -->[\s\S]*?<!-- starter:end -->\n*/g, "");
     }
     if (next !== text) {
         writeFileSync(file, next);
