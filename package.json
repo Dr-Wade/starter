@@ -30,7 +30,7 @@
         "init-project": "node scripts/init-project.mjs"
     },
     "devDependencies": {
-        "@drwade/eslint-config": "^1.0.0",
+        "@drwade/eslint-config": "^2.0.0",
         "@playwright/test": "^1.64.1",
         "@stylistic/eslint-plugin": "^5.10.0",
         "@types/node": "^26.6.6",

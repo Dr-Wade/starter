@@ -20,19 +20,14 @@ allowBuilds:
   vue-demi: false
 
 # A version must be a day old before it is installed: most malicious releases
-# are caught and unpublished within hours.
+# are caught and unpublished within hours. Our own packages are exempt: we
+# published them, and a config release should be usable the same day.
 minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - '@drwade/eslint-config'
 
-# @drwade/eslint-config 1.0.0 declares peers from before ESLint 10. These
-# versions support it. Remove once the config publishes newer peer ranges.
-overrides:
-  'eslint-plugin-vue': '^10.12.0'
-  '@stylistic/eslint-plugin': '^5.10.0'
-  'typescript-eslint': '^8.72.1'
-
-# Peers declared before these majors shipped. TypeScript 7 is a port of 6 and
-# checks the same language; ESLint 10 is covered by the overrides above.
+# Peers declared before TypeScript 7 shipped. It is a port of 6 and checks the
+# same language.
 peerDependencyRules:
   allowedVersions:
     typescript: '7'
-    eslint: '10'
