@@ -22,7 +22,6 @@ export async function createApp () {
     app.setGlobalPrefix("api");
     // Validates every parameter declared with `{ schema }`; others pass through.
     app.useGlobalPipes(new StandardSchemaValidationPipe());
-    app.enableShutdownHooks();
 
     const document = createOpenApiDocument(app);
     SwaggerModule.setup("api/docs", app, document, { jsonDocumentUrl: "api/docs-json" });

@@ -195,3 +195,13 @@ on port 80. The API and the worker take `DATABASE_URL`, `REDIS_URL` and
 `APP_URL`; the API also takes `BETTER_AUTH_SECRET` (and optionally `SENTRY_DSN`,
 `SENTRY_CLIENT_DSN`), the worker the `SMTP_*` variables. The API applies
 pending migrations when it starts.
+
+Dokploy deploys start-first by default, and the images' `HEALTHCHECK` is what
+makes that drop no requests: Swarm waits for the new API or client container to
+be healthy before stopping the old one. Leave their *Update Config* at the
+default or set it to start-first with rollback. Postgres and Redis are set to
+**stop-first** explicitly (*Advanced → Swarm Settings → Update Config* and
+*Rollback Config*) and keep their data on a named volume; Redis runs with the
+command `docker-entrypoint.sh redis-server --appendonly yes`. Both Node services
+exit cleanly on `SIGTERM` (see their `main.ts`). See the handbook's `deploy.md`,
+*Redeploying without downtime*.

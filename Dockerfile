@@ -65,3 +65,7 @@ FROM nginx:1-alpine AS client
 COPY services/client/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/services/client/dist /usr/share/nginx/html
 EXPOSE 80
+# Lets a start-first update keep the old container serving until this one
+# answers. 127.0.0.1, not localhost: nginx listens on IPv4 only.
+HEALTHCHECK --interval=10s --timeout=3s --start-period=10s --retries=3 \
+    CMD wget -q --spider http://127.0.0.1/ || exit 1
