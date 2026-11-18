@@ -195,3 +195,10 @@ on port 80. The API and the worker take `DATABASE_URL`, `REDIS_URL` and
 `APP_URL`; the API also takes `BETTER_AUTH_SECRET` (and optionally `SENTRY_DSN`,
 `SENTRY_CLIENT_DSN`), the worker the `SMTP_*` variables. The API applies
 pending migrations when it starts.
+
+The API and the client update **start-first** (*Advanced → Swarm Settings →
+Update Config*: `{"Parallelism": 1, "Order": "start-first", "FailureAction":
+"rollback", "Monitor": 30000000000}`), so a redeploy drops no requests: the
+images' `HEALTHCHECK` tells Swarm when the new container is ready. The worker
+stays stop-first. Both Node services exit cleanly on `SIGTERM` (see their
+`main.ts`). See the handbook's `deploy.md`, *Redeploying without downtime*.
